@@ -1,6 +1,7 @@
 using CharMap.Model;
 using GalaSoft.MvvmLight;
 using System.Collections.Generic;
+using System.Linq;
 using Windows.UI.Xaml.Media;
 
 namespace CharMap.ViewModel
@@ -21,6 +22,8 @@ namespace CharMap.ViewModel
     {
         private List<DispalyedChar> _chars;
         private FontFamily _fontFamily;
+        private List<FontFamily> _fontFamilies;
+
 
 
         /// <summary>
@@ -28,7 +31,7 @@ namespace CharMap.ViewModel
         /// </summary>
         public MainViewModel()
         {
-            FontFamily = new FontFamily("Segoe MDL2 Assets");
+            FontFamily = FontFamilies.First();
             initChars();
             ////if (IsInDesignMode)
             ////{
@@ -44,9 +47,19 @@ namespace CharMap.ViewModel
         {
             var list = new List<DispalyedChar>();
 
-            for (int i = 0xE001; i <= 0xEBC3; i++)
+            if (FontFamily.Source.Contains("MDL2"))
             {
-                list.Add(new DispalyedChar(i, FontFamily));
+                for (int i = 0xE001; i <= 0xEBC3; i++)
+                {
+                    list.Add(new DispalyedChar(i, FontFamily));
+                }
+            }
+            else if (FontFamily.Source.Contains("UI"))
+            {
+                for (int i = 0xE000; i <= 0xE2FE; i++)
+                {
+                    list.Add(new DispalyedChar(i, FontFamily));
+                }
             }
 
             Chars = list;
@@ -56,15 +69,23 @@ namespace CharMap.ViewModel
         public FontFamily FontFamily
         {
             get { return _fontFamily; }
-            set { Set(ref _fontFamily, value); }
+            set
+            {
+                Set(ref _fontFamily, value);
+                initChars();
+            }
         }
+
+        public List<FontFamily> FontFamilies => _fontFamilies ??
+            (_fontFamilies = new List<FontFamily> { new FontFamily("Segoe MDL2 Assets"), new FontFamily("Segoe UI Symbol") });
+
 
         public List<DispalyedChar> Chars
         {
             get { return _chars; }
             set
             {
-                Set(ref _chars, value);                
+                Set(ref _chars, value);
             }
         }
     }

@@ -9,11 +9,9 @@
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:Key="CharDataTemplate">
-            <StackPanel Margin="10">
-                <Border HorizontalAlignment="Center" BorderBrush="#FF363636" BorderThickness="0.5" >
-                    <TextBlock Text="{Binding RenderString}" FontFamily="{Binding FontFamily}" FontSize="48" Height="48" Width="48"/>
-                </Border>
-                <TextBlock Text="{Binding DisplayName}" FontSize="12" HorizontalAlignment="Center"/>
+            <StackPanel Margin="20">
+                <TextBlock Text="{Binding RenderString}" FontFamily="{Binding FontFamily}" FontSize="48" Height="70" Width="70" Margin="0" d:LayoutOverrides="TopPosition, BottomPosition" TextAlignment="Center"/>
+                <TextBlock Text="{Binding DisplayName}" FontSize="12" HorizontalAlignment="Center" Margin="0,10,0,0"/>
             </StackPanel>
         </DataTemplate>
     </Page.Resources>
@@ -25,7 +23,7 @@
         </Grid.RowDefinitions>
         <StackPanel Orientation="Vertical" d:LayoutOverrides="Height">
             <TextBlock  Text="Charmap" Style="{StaticResource SubheaderTextBlockStyle}" />
-            <TextBlock  Text="{Binding FontFamily}" Style="{StaticResource CaptionTextBlockStyle}"/>
+            <ComboBox ItemsSource="{Binding FontFamilies}" SelectedItem="{Binding FontFamily, Mode=TwoWay}" DisplayMemberPath="Source"/>
         </StackPanel>
         <GridView x:Name="gridView" Grid.Row="1" ItemsSource="{Binding Chars}" ItemTemplate="{StaticResource CharDataTemplate}"/>
 
